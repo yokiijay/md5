@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Register</title>
+    <link href="https://cdn.bootcss.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdn.bootcss.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+    <script src="https://cdn.bootcss.com/popper.js/1.12.5/umd/popper.min.js"></script>
+    <script>
+        $.fn.serializeObject = function(){
+            var o = {};
+            var a = this.serializeArray();
+            $.each(a, function() {
+            if (o[this.name] !== undefined) {
+            if (!o[this.name].push) {
+            o[this.name] = [o[this.name]];
+            }
+            o[this.name].push(this.value || '');
+            } else {
+            o[this.name] = this.value || '';
+            }
+            });
+            return o;
+        };
+    </script>
+    <style>
+        .registerpage{
+            color: #6e8da8;
+            letter-spacing: 30px;
+            margin-left: 30px;
+            margin-top: 30px;
+        }
+        .container{
+            max-width: 400px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="row text-center">
+            <!-- <div class="col-sm-12">
+                <h1>小小留言本</h1>
+            </div> -->
+            <div class="col-sm-12">
+                <h4 class="registerpage">注册页面</h4>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12">
+                <form id="form1">
+                  <fieldset class="form-group">
+                    <label for="formGroupExampleInput">用户名</label>
+                    <input type="text" class="form-control" id="formGroupExampleInput" placeholder="ID" name="name">
+                </fieldset>
+                <fieldset class="form-group">
+                    <label for="exampleTextarea">密码</label>
+                    <input type="password" class="form-control" id="exampleTextarea" placeholder="PASSWORD" name="password">
+                  </fieldset>
+                </form>
+                <button id="submit" type="button" class="btn btn-primary btn-lg btn-block">注册</button>
+            </div>
+        </div>
+    </div>
+    <script>
+    $('#submit').click(function (){
+        var data=$('#form1').serialize();
+        var dataObj=$('#form1').serializeObject();
+        $.post('/registered',data,function (result){
+            if(result.loginStatus==1){
+                alert('恭喜'+dataObj.name+'您已注册成功');
+            }else if(result.loginStatus==-1){
+                alert('注册失败，该用户已注册');
+            }
+        })
+    })
+    </script>
+</body>
+</html>
